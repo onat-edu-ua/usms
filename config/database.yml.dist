@@ -1,0 +1,19 @@
+development:
+  encoding: unicode
+  adapter: postgresql
+  database: usms
+  username: usms
+  password: usms
+  host: 193.186.15.27
+  port: 5432
+  pool: 3
+
+production:
+  encoding: unicode
+  adapter: postgresql
+  database: usms
+  username: usms
+  password: usms
+  host: 193.186.15.27
+  port: 5432
+  pool: 3
