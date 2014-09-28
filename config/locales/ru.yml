@@ -1,0 +1,73 @@
+ru:
+  date:
+    formats:
+      long: "%Y-%m-%d"
+
+  time:
+    formats:
+      long: "%Y-%m-%d %H:%M:%S"
+  
+  usms:
+    menu:
+      student: "Студенты"
+      system: "Конфигурация"
+      item:
+        student: "Студенты"
+        student_group: "Группы"
+        operator: "Операторы"
+        audit_log: "Журнал операций"
+
+  activerecord:
+    errors:
+      models:
+        student_group:
+          attributes:
+            course:
+              blank: "Необходимо указать курс на котором учится группа"
+        student:
+          attributes:
+            group:
+              blank: "Необходимо указать группу"
+            first_name:
+              blank: "Введите имя студента"
+            last_name:
+              blank: "Введите фамилию студента"
+            password:
+              blank: "Введите пароль для студента"
+            email:
+              invalid: "Неверный формат почтового адреса"
+
+    models:
+      student: "Студент"
+      admin_user: "Оператор"
+      student_group: "Группа"
+      audit_log: "Журнал операций"
+
+    attributes:
+      audit_log:
+        item_type: "Тип объекта"
+        item_id: "ID объекта"
+        event: "Операция"
+        created_at: "Время"
+        who: "fd"
+      student_group:
+        name: "Имя группы"
+        course: "Курс"
+      student:
+        first_name: "Имя"
+        last_name: "Фамилия"
+        middle_name: "Отчество"
+        ticket_num: "Студ. Билет#"
+        phone: "Телефон"
+        email: "E-mail"
+        group: "Группа"
+        login: "Логин"
+        password: "Пароль"
+      admin_user:
+        email: "Email"
+        facultet: "Факультет"
+        created_at: "Добавлено"
+        updated_at: "Изменено"
+        current_sign_in_at: "Начало текущей сессии"
+        last_sign_in_at: "Время последнего логина"
+        sign_in_count: "Количество логинов"

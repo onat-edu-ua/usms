@@ -41,3 +41,7 @@ gem 'puma'
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 
+gem 'translit'
+gem 'active_admin_sidebar', :git => 'https://github.com/Fivell/active_admin_sidebar.git'
+gem 'radum'
+gem 'paper_trail'

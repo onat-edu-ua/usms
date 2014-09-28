@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140915154929) do
+ActiveRecord::Schema.define(version: 20140928103809) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -48,5 +48,45 @@ ActiveRecord::Schema.define(version: 20140915154929) do
 
   add_index "admin_users", ["email"], name: "index_admin_users_on_email", unique: true, using: :btree
   add_index "admin_users", ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true, using: :btree
+
+  create_table "student_courses", force: true do |t|
+    t.string "name", limit: nil, null: false
+  end
+
+  add_index "student_courses", ["name"], name: "student_courses_name_key", unique: true, using: :btree
+
+  create_table "student_groups", force: true do |t|
+    t.string  "name",      limit: nil, null: false
+    t.integer "course_id",             null: false
+  end
+
+  add_index "student_groups", ["name"], name: "student_groups_name_key", unique: true, using: :btree
+
+  create_table "students", force: true do |t|
+    t.string   "first_name",  limit: nil,                   null: false
+    t.string   "last_name",   limit: nil,                   null: false
+    t.string   "middle_name", limit: nil
+    t.datetime "created_at",              default: "now()", null: false
+    t.datetime "updated_at"
+    t.string   "ticket_num",  limit: nil
+    t.string   "login",       limit: nil
+    t.string   "password",    limit: nil
+    t.integer  "group_id"
+    t.string   "phone",       limit: nil
+    t.string   "email",       limit: nil
+  end
+
+  add_index "students", ["login"], name: "students_username_key", unique: true, using: :btree
+
+  create_table "versions", force: true do |t|
+    t.string   "item_type",  null: false
+    t.integer  "item_id",    null: false
+    t.string   "event",      null: false
+    t.string   "whodunnit"
+    t.text     "object"
+    t.datetime "created_at"
+  end
+
+  add_index "versions", ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id", using: :btree
 
 end
