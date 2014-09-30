@@ -8,11 +8,396 @@
 // $sidebar-width: 242px;
 
 // Active Admin's got SASS!
-@import "active_admin/mixins";
+
+//@import "chosen";
+
+$primary-color: #2e86cc !default;
+$link-color: #4092d4 !default;
+$current-menu-item-background: #10609E !default;
+$hover-menu-item-background: #10609E !default;
+$secondary-gradient-start: #fff !default;
+$section-header-text-color: #000000 !default;
+//$secondary-gradient-stop: #2e86cc !default;
+@import "active_admin/mixins/variables";
+//custom variables
+@import "active_admin/mixins/reset";
+//custom variables
+@import "active_admin/mixins/gradients";
+//custom variables
+@import "active_admin/mixins/shadows";
+//custom variables
+@import "active_admin/mixins/icons";
+//custom variables
+@import "active_admin/mixins/rounded";
+//custom variables
+@import "active_admin/mixins/buttons";
+//custom variables
+@import "active_admin/mixins/sections";
+//custom variables
+@import "active_admin/mixins/utilities";
+//custom variables
+@import "active_admin/mixins/typography";
+//custom variables
+@import "bourbon";
+
 @import "active_admin/base";
+
+//gems
 @import "active_admin_sidebar/index";
+//@import "just_datetime_picker/base";
+
+form.filter_form .filter_form_field.select_and_search input[type=text].search_filter_string {
+  margin-left: 0px;
+  width: 218px;
+}
+
+//toggle
+div.toggle.panel {
+  h3 {
+    cursor: pointer;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+  .panel_contents {
+    display: none;
+  }
+}
+
+//end toggle
+
+// tooltip
+.ui-tooltip {
+  padding: 8px;
+  position: absolute;
+  z-index: 9999;
+  max-width: 300px;
+  -webkit-box-shadow: 0 0 5px #aaa;
+  box-shadow: 0 0 5px #aaa;
+  background-color: #0081B1;
+  color: white;
+
+}
+
+body .ui-tooltip {
+  border-width: 2px;
+
+}
+
+//end tooltip
+
+//nowrap cells
+table.index_table td, th {
+  white-space: nowrap;
+  padding: 5px 10px 5px !important;
+}
+
+.panel_contents table {
+  margin-top: 0px;
+  white-space: nowrap;
+}
+
+// end nowrap cells
+
+// titlebar changes
+
+body.active_admin #title_bar .action_items a.delete-link {
+  color: #990033;
+}
+
+#title_bar #titlebar_left, #title_bar #titlebar_right {
+  height: 30px;
+}
+
+body.active_admin #title_bar h2 {
+  margin: 0;
+  padding: 0;
+  font-size: 1em;
+  font-weight: bold;
+  padding-top: 5px;
+}
+
+#title_bar {
+  position: relative;
+}
+
+#title_bar #titlebar_right {
+  position: absolute;
+  top: 10px;
+}
+
+#title_bar #titlebar_left, #title_bar #titlebar_right {
+  vertical-align: baseline;
+  display: block;
+}
+
+body.active_admin #title_bar .action_items {
+  left: 0;
+  text-align: left;
+  top: 10%;
+}
+
+#titlebar_left .breadcrumb {
+  float: left;
+  margin-bottom: 5px;
+  margin-top: 5px;
+
+}
+
+//end titlebar
+
+//pagination
+#index_footer .per_page {
+  float: left;
+}
+
+#index_footer .pagination, #index_footer .pagination_information {
+  float: left;
+}
+
+#index_top .per_page {
+  float: left;
+}
+
+#index_top .pagination, #index_top .pagination_information {
+  float: left;
+}
+
+//end pagination
+
+#header a, #header a:link {
+  color: #fff;
+}
+
+th {
+  color: #000000 !important;
+}
+
+#active_admin_content {
+  margin: 0;
+  padding: 0px 5px;
+}
+
+#title_bar {
+  margin: 0;
+  //  margin-bottom: 6px;
+}
+
+#header {
+  padding: 2px;
+}
+
+body.logged_in .flashes .flash.flash_notice {
+  margin-bottom: 10px;
+}
+
+#header h1 img {
+  top: 0px;
+  height: 16px;
+}
+
+#title_bar #titlebar_left, #title_bar #titlebar_right {
+  height: 19px;
+}
+
+#title_bar {
+  padding: 15px 30px;
+}
+
+#active_admin_content {
+  margin-top: 10px;
+}
+
+body.active_admin .table_tools {
+  display: inline-block;
+  margin-bottom: 10px;
+}
+
+//////// json treee ////
+.jsontree {
+  font-size: 13px;
+  line-height: 1.2;
+  font-family: monospace;
+}
+
+.jsontree,
+.jsontree ul {
+  list-style: none outside none;
+}
+
+.jsontree {
+  padding-left: 0;
+}
+
+.jsontree>li>.key {
+  display: none;
+}
+
+.jsontree .array>li>.key {
+  display: none;
+}
+
+.jsontree .null {
+  color: #999;
+}
+
+.jsontree .string {
+  color: #4e9a06;
+}
+
+.jsontree .number {
+  color: #a40000;
+}
+
+.jsontree .boolean {
+  color: #c4a000;
+}
+
+.jsontree .key {
+  color: #204a87;
+}
+
+.jsontree .fold {
+  cursor: pointer;
+}
+
+.jsontree .fold:before {
+  content: "⊗";
+  padding: 0;
+  font-size: 16px;
+  margin: 0;
+  display: inline-block;
+  width: 13px;
+  text-align: center;
+  height: 13px;
+  line-height: 13px;
+  vertical-align: middle;
+  font-family: sans-serif;
+  color: #933;
+}
+
+.jsontree .fold.folded:before {
+  content: "⊕";
+  padding: 0;
+  font-size: 16px;
+  margin: 0;
+  display: inline-block;
+  width: 13px;
+  text-align: center;
+  height: 13px;
+  line-height: 13px;
+  vertical-align: middle;
+  font-family: sans-serif;
+  color: #000;
+}
+
+html body div#wrapper div.chart {
+  height: 350px;
+  position: relative;;
+}
+
+html body div#wrapper div.chart div {
+  margin: 1px auto;
+  text-align: center;
+  background-color: white;
+}
+
+html body div#wrapper div.chart img {
+  margin: 140px auto;
+}
+
+.stats .panel_contents {
+  height: 300px;
+}
+
+.admin_cdrs > #wrapper {
+  display: table;
+}
+
+body.active_admin table.index_table tr.selected td {
+  background: #CBE2F7;
+}
+
+body.active_admin table.index_table tr td.selected {
+  background: #CBE2F7;
+}
+
+////// end json tree ///////
+
+////resources dashboard /////
+
+.resources-list sub, .resources-list sup {
+
+  text-decoration: none !important;
+
+  /* Specified in % so that the sup/sup is the
+     right size relative to the surrounding text */
+  font-size: 11px;
+
+  /* Zero out the line-height so that it doesn't
+     interfere with the positioning that follows */
+  line-height: 0;
+
+  /* Where the magic happens: makes all browsers position
+     the sup/sup properly, relative to the surrounding text */
+  position: relative;
+
+  /* Note that if you're using Eric Meyer's reset.css, this
+     is already set and you can remove this rule */
+  vertical-align: baseline;
+}
+
+.resources-list sup {
+  a {
+    color: green;
+    text-decoration: none;
+  }
+
+  /* Move the superscripted text up */
+  //top: -0.5em;
+}
+
+
+.resources-list sub {
+  a {
+    color: red;
+    text-decoration: none;
+  }
+}
+
+.resources-list sub {
+        display: block;
+        margin-left: 46px;
+}
+
+.resources-list sup {
+        position: relative;
+        top: -5px;
+}
+
+
+.editable_column .status_tag {
+  cursor: pointer;
+}
+table.index_table th.editable_column a{
+  color: #2E86CC;
+}
 
 // Overriding any non-variable SASS must be done after the fact.
 // For example, to change the default status-tag color:
 //
-//   .status_tag { background: #6090DB; }
+//   body.active_admin {
+//      .status_tag { background: #6090DB; }
+//   }
+//
+// Notice that Active Admin CSS rules are nested within a
+// 'body.active_admin' selector to prevent conflicts with
+// other pages in the app. It is best to wrap your changes in a
+// namespace so they are properly recognized. You have options
+// if you e.g. want different styles for different namespaces:
+//
+// .active_admin       applies to any Active Admin namespace
+// .admin_namespace    applies to the admin namespace (eg: /admin)
+// .other_namespace    applies to a custom namespace named other (eg: /other)
+
+
