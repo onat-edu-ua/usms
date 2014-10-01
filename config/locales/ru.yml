@@ -17,6 +17,7 @@ ru:
         operator: "Операторы"
         audit_log: "Журнал операций"
         student_uploaded_document: "Документы студента"
+        delayed_job: "Очередь задач"
 
   activerecord:
     errors:

@@ -27,7 +27,8 @@ gem 'sdoc', '~> 0.4.0',          group: :doc
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
-gem 'activeadmin', github: 'activeadmin'
+#gem 'activeadmin', github: 'activeadmin'
+gem 'activeadmin', github: 'gregbell/active_admin'
 gem 'pg'
 # Use unicorn as the app server
 gem 'unicorn'
@@ -43,5 +44,7 @@ gem 'puma'
 
 gem 'translit'
 gem 'active_admin_sidebar', :git => 'https://github.com/Fivell/active_admin_sidebar.git'
-gem 'radum'
+gem 'radum', :git => 'https://github.com/srna/radum.git'
 gem 'paper_trail'
+gem 'delayed_job_active_record'
+gem 'daemons'

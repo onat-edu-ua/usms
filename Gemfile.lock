@@ -1,5 +1,5 @@
 GIT
-  remote: git://github.com/activeadmin/activeadmin.git
+  remote: git://github.com/gregbell/active_admin.git
   revision: 8299dee5bd08c78cea7d216382dfc183fef60934
   specs:
     activeadmin (1.0.0.pre)
@@ -21,6 +21,13 @@ GIT
   specs:
     active_admin_sidebar (0.0.3)
       activeadmin
+
+GIT
+  remote: https://github.com/srna/radum.git
+  revision: 67cf86b2f03c652b4058fde1f8e0c981f707635d
+  specs:
+    radum (0.0.3)
+      net-ldap (>= 0.1.1)
 
 GEM
   remote: https://rubygems.org/
@@ -66,6 +73,12 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.8.0)
+    daemons (1.1.9)
+    delayed_job (4.0.4)
+      activesupport (>= 3.0, < 4.2)
+    delayed_job_active_record (4.0.2)
+      activerecord (>= 3.0, < 4.2)
+      delayed_job (>= 3.0, < 4.1)
     devise (3.3.0)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -104,7 +117,7 @@ GEM
     mime-types (1.25.1)
     minitest (5.4.2)
     multi_json (1.10.1)
-    net-ldap (0.1.1)
+    net-ldap (0.8.0)
     orm_adapter (0.5.0)
     paper_trail (3.0.5)
       activerecord (>= 3.0, < 5.0)
@@ -118,8 +131,6 @@ GEM
     rack (1.5.2)
     rack-test (0.6.2)
       rack (>= 1.0)
-    radum (0.0.3)
-      net-ldap (= 0.1.1)
     rails (4.1.2)
       actionmailer (= 4.1.2)
       actionpack (= 4.1.2)
@@ -197,13 +208,15 @@ DEPENDENCIES
   active_admin_sidebar!
   activeadmin!
   coffee-rails (~> 4.0.0)
+  daemons
+  delayed_job_active_record
   devise
   jbuilder (~> 2.0)
   jquery-rails
   paper_trail
   pg
   puma
-  radum
+  radum!
   rails (= 4.1.2)
   sass-rails (~> 4.0.3)
   sdoc (~> 0.4.0)

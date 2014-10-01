@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140928103809) do
+ActiveRecord::Schema.define(version: 20141001142605) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -49,6 +49,22 @@ ActiveRecord::Schema.define(version: 20140928103809) do
   add_index "admin_users", ["email"], name: "index_admin_users_on_email", unique: true, using: :btree
   add_index "admin_users", ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true, using: :btree
 
+  create_table "delayed_jobs", force: true do |t|
+    t.integer  "priority",   default: 0, null: false
+    t.integer  "attempts",   default: 0, null: false
+    t.text     "handler",                null: false
+    t.text     "last_error"
+    t.datetime "run_at"
+    t.datetime "locked_at"
+    t.datetime "failed_at"
+    t.string   "locked_by"
+    t.string   "queue"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
+
   create_table "student_courses", force: true do |t|
     t.string "name", limit: nil, null: false
   end
@@ -62,6 +78,21 @@ ActiveRecord::Schema.define(version: 20140928103809) do
 
   add_index "student_groups", ["name"], name: "student_groups_name_key", unique: true, using: :btree
 
+  create_table "student_roles", force: true do |t|
+    t.string "name", limit: nil, null: false
+  end
+
+  add_index "student_roles", ["name"], name: "student_role_name_key", unique: true, using: :btree
+
+  create_table "student_uploaded_documents", force: true do |t|
+    t.string   "name",       limit: nil, null: false
+    t.string   "filename",   limit: nil, null: false
+    t.binary   "data"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "student_id", limit: 8,   null: false
+  end
+
   create_table "students", force: true do |t|
     t.string   "first_name",  limit: nil,                   null: false
     t.string   "last_name",   limit: nil,                   null: false
@@ -74,6 +105,7 @@ ActiveRecord::Schema.define(version: 20140928103809) do
     t.integer  "group_id"
     t.string   "phone",       limit: nil
     t.string   "email",       limit: nil
+    t.integer  "role_id",                 default: 1,       null: false
   end
 
   add_index "students", ["login"], name: "students_username_key", unique: true, using: :btree

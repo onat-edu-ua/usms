@@ -31,10 +31,24 @@ class Student < ActiveRecord::Base
       end
       super
     end
+    self.delay.ad_sync
   end
 
   def display_name
     "#{self.last_name} #{self.first_name} #{self.middle_name}"
+  end
+
+  def ad_sync
+    ad = RADUM::AD.new :root => 'dc=test,dc=onat,dc=edu,dc=ua',
+                    :user => 'cn=Administrator,cn=Users',
+                    :password => '1yoyP23wru3hdgd',
+                    :server => '10.4.1.101'
+
+    cont=ad.find_container('cn=Users')
+    ad.load
+    user = RADUM::User.new :username => self.login,:container=>cont , :primary_group=>ad.find_group_by_name('Domain Users')
+    ad.sync
+
   end
 
 end
