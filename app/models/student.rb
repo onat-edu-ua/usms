@@ -2,17 +2,13 @@ class Student < ActiveRecord::Base
 
   has_paper_trail :class_name => 'AuditLog'
 
-
-
   belongs_to :group,:class_name => StudentGroup,:foreign_key => :group_id
+  belongs_to :role,:class_name => StudentRole,:foreign_key => :role_id
+  has_many :documents,:class_name => StudentUploadedDocument,:foreign_key => :student_id
+
   validates_presence_of :first_name,:last_name,:group
   validates_format_of :email, :with => /(.*)@(.*)/
 
-
-
-  def display_name
-    "#{self.first_name}"
-  end
 
   def create_or_update
     transaction do

@@ -16,13 +16,14 @@ ActiveAdmin.register Student do
   end
 
   filter :id
-  filter :first_name
+  filter :last_name
   filter :ticket_num
   filter :group
   filter :login
   filter :phone
   filter :email
   filter :login
+  filter :role
 
   show do
     attributes_table do
@@ -36,6 +37,7 @@ ActiveAdmin.register Student do
       row :group
       row :login
       row :password
+      row :role
     end
   end
 
@@ -49,12 +51,18 @@ ActiveAdmin.register Student do
       f.input :phone
       f.input :email
       f.input :group
+      f.input :role
     end
     f.actions
   end
 
+  sidebar(I18n.t('usms.menu.item.student'), :only=>[:show, :edit]) do
+
+  end
+
+
   permit_params do
-    [:last_name,:first_name,:middle_name,:ticket_num,:group_id,:phone,:email]
+    [:last_name,:first_name,:middle_name,:ticket_num,:group_id,:phone,:email,:role_id]
   end
 
 end
