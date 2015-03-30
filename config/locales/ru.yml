@@ -73,6 +73,7 @@ ru:
         group: "Группа"
         login: "Логин"
         password: "Пароль"
+        role: "Роль"
       admin_user:
         email: "Email"
         facultet: "Факультет"
