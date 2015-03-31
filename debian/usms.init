@@ -1,0 +1,70 @@
+#!/bin/bash
+### BEGIN INIT INFO
+# Provides:          usms
+# Required-Start:    $local_fs $remote_fs $network $syslog
+# Required-Stop:     $local_fs $remote_fs $network $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Start/stop SEMS UI
+### END INIT INFO
+
+NAME=usms
+USER=usms
+GROUP=usms
+MODE=production
+
+APP_ROOT=/home/usms
+PID=/var/run/usms/usms-unicorn.pid
+
+PARAMS="$APP_ROOT/.gem/bin/bundle exec unicorn -D -c $APP_ROOT/config/unicorn.rb -E $MODE"
+OPTS="--chdir $APP_ROOT --pidfile $PID --quiet"
+CMD="/usr/bin/ruby"
+
+export USMS_TZ=`cat /etc/timezone`
+export RAILS_ENV=$MODE
+export RACK_ENV=$MODE
+export RAKE_ENV=$MODE
+export BUNDLE_GEMFILE=$APP_ROOT/Gemfile
+export GEM_HOME=$APP_ROOT/.gem
+export GEM_PATH=$APP_ROOT/.gem:$APP_ROOT/.bundle_gem
+
+mkdir /var/run/usms &>/dev/null
+chown $USER:$GROUP /var/run/usms
+
+set -e
+. /lib/lsb/init-functions
+
+case $1 in
+bundle)
+        log_daemon_msg "Starting: bundler for $NAME in $MODE mode"
+        shift
+        start-stop-daemon --start --oknodo -c $USER:$GROUP --chdir $APP_ROOT --pid /var/run/fp.pid__ --startas $CMD -- $APP_ROOT/.gem/bin/bundle $@
+        log_end_msg $?
+        ;;
+start)
+        log_daemon_msg "Starting: $NAME"
+        start-stop-daemon --start --oknodo $OPTS --exec $CMD -- $PARAMS
+        log_end_msg $?
+        ;;
+stop)
+        log_daemon_msg "Stopping: $NAME"
+        start-stop-daemon --oknodo --stop --retry 60 --signal 3 --retry 60 $OPTS --exec $CMD -- $PARAMS
+        log_end_msg $?
+        ;;
+force-stop)
+        log_daemon_msg "Stopping forced: NAME"
+        start-stop-daemon --oknodo --stop --retry 60 --signal 15 --retry 60 $OPTS --exec $CMD -- $PARAMS
+        log_end_msg $?
+        ;;
+restart|reload|force-reload)
+        $0 stop
+        sleep 2
+        $0 start
+        ;;
+*)
+        echo >&2 "Usage: $0 <bundle|start|stop|restart|force-stop>"
+        exit 1
+        ;;
+esac
+
+exit 0

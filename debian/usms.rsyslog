@@ -1,0 +1,2 @@
+if $programname == 'usms' then /var/log/yeti-admin.log
+if $programname == 'usms' then ~

@@ -1,0 +1,33 @@
+#!/bin/bash
+
+user=usms
+
+case "$1" in 
+	configure)
+		#apply init.d defaults
+		update-rc.d usms defaults
+		#apply files permissions for new user
+		chown -R $user:$user /home/$user
+		#reload rsyslog
+		[ -x /etc/init.d/rsyslog ] && /etc/init.d/rsyslog restart
+		#remove default nginx config
+		rm -f /etc/nginx/sites-enabled/default || /bin/true
+		#add init scripts to autorun
+	
+		#start init.d scripts
+		/etc/init.d/usms start || /bin/true
+		/etc/init.d/nginx restart || /bin/true
+		
+	;;
+	abort-upgrade|abort-remove|abort-deconfigure)
+		exit 0
+	;;
+	*)
+		echo "postinst called with unknown argument \$1'" >&2
+		exit 1
+	;;
+esac
+
+. /usr/share/debconf/confmodule
+
+exit 0

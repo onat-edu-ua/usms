@@ -1,0 +1,15 @@
+Source: usms
+Maintainer: admin <admin@onat.edu.ua>
+Section: net
+Priority: optional
+Standards-Version: 3.9.2
+Build-Depends: debhelper (>= 9), devscripts
+
+Package: usms
+Section: net
+Architecture: amd64
+Depends: ${shlibs:Depends}, ${misc:Depends}, ruby, nginx, postgresql-client, curl
+Conflicts: usms
+Description: UI for usms.onat.edu.ua
+	USMS user interface
+

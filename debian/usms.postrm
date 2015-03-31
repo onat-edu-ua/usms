@@ -1,0 +1,16 @@
+#!/bin/bash
+
+user=usms
+
+if [ "$1" = "purge" ]; then 
+	update-rc.d usms remove
+	deluser --quiet --remove-home $user &>/dev/null || true
+	rm -fr /home/$user /etc/nginx/sites-available/usms.dist
+	/etc/init.d/nginx restart || /bin/true
+
+fi
+
+#reload rsyslog
+[ -x /etc/init.d/rsyslog ] && /etc/init.d/rsyslog restart
+
+exit 0
