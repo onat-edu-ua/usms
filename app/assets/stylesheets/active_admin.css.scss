@@ -43,7 +43,7 @@ $section-header-text-color: #000000 !default;
 @import "active_admin/base";
 
 //gems
-@import "active_admin_sidebar/index";
+@import "active_admin_sidebar";
 //@import "just_datetime_picker/base";
 
 form.filter_form .filter_form_field.select_and_search input[type=text].search_filter_string {
