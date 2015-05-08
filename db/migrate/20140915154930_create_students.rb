@@ -18,7 +18,6 @@ class CreateStudents < ActiveRecord::Migration
       );"
     )
 
-    execute("insert into student_roles(name) values('Норма');")
     execute("insert into student_roles(name) values('Староста');")
 
      execute("create table student_groups(
@@ -40,7 +39,7 @@ password varchar,
 group_id integer references student_groups(id),
 phone varchar,
 email varchar,
-role_id integer not null default 1 references student_roles(id)
+role_id integer[]
 );")
 
     execute("create table student_uploaded_documents(

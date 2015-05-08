@@ -3,37 +3,52 @@ class Student < ActiveRecord::Base
   has_paper_trail :class_name => 'AuditLog'
 
   belongs_to :group,:class_name => StudentGroup,:foreign_key => :group_id
-  belongs_to :role,:class_name => StudentRole,:foreign_key => :role_id
+ # belongs_to :role,:class_name => StudentRole,:foreign_key => :role_id
   has_many :documents,:class_name => StudentUploadedDocument,:foreign_key => :student_id
 
   validates_presence_of :first_name, :last_name, :group
   validates_format_of :email, :with => /(.*)@(.*)/
 
 
-  def create_or_update
-    transaction do
-      ActiveRecord::Base.connection.execute("LOCK TABLE students")
-
-      if self.new_record?
-        self.password=SecureRandom.urlsafe_base64(5,false)
-        @start_try=Translit.convert(self.last_name, :english).downcase << "." << Translit.convert(self.first_name, :english)[0].downcase
-
-        ## check if username already exists
-        @try=@start_try
-        for i in 1..100
-          st=Student.find_by login: @try
-          if st.nil?
-            break
-          end
-          @try=@start_try+i.to_s
-        end
-        self.login=@try
-      end
-      super
-
-    self.delay.ad_sync
-    end
+  def roles_list
+    roles.map(&:name).join(",")
   end
+
+  def roles
+    @r ||= StudentRole.where(id: role_id)
+  end
+
+
+  scope :role_in, ->(*ids) { where("role_id @>ARRAY[?]", ids.to_a.map(&:to_i)) }
+
+  before_create do
+    ActiveRecord::Base.connection.execute("LOCK TABLE students")
+    self.login=generate_login
+    self.password=generate_password
+  end
+
+  after_create do
+    delay.ad_sync
+  end
+
+  def generate_login
+    @start_try=Translit.convert(self.last_name, :english).downcase << "." << Translit.convert(self.first_name, :english)[0].downcase
+    ## check if username already exists
+    @try=@start_try
+    for i in 1..100
+      st=Student.find_by login: @try
+      if st.nil?
+        break
+      end
+      @try=@start_try+i.to_s
+    end
+    @try
+  end
+
+  def generate_password
+    SecureRandom.urlsafe_base64(5,false)
+  end
+
 
   def display_name
     "#{self.last_name} #{self.first_name} #{self.middle_name}"
@@ -88,6 +103,14 @@ class Student < ActiveRecord::Base
     # }
     # ldap.add(:dn => dn, :attributes => attr)
 
+  end
+
+  private
+
+    def self.ransackable_scopes(auth_object = nil)
+    [
+        :role_in
+    ]
   end
 
 end

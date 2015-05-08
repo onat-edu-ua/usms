@@ -94,8 +94,8 @@ ActiveRecord::Schema.define(version: 20141001142605) do
   end
 
   create_table "students", force: true do |t|
-    t.string   "first_name",  limit: nil,             null: false
-    t.string   "last_name",   limit: nil,             null: false
+    t.string   "first_name",  limit: nil, null: false
+    t.string   "last_name",   limit: nil, null: false
     t.string   "middle_name", limit: nil
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -105,7 +105,7 @@ ActiveRecord::Schema.define(version: 20141001142605) do
     t.integer  "group_id"
     t.string   "phone",       limit: nil
     t.string   "email",       limit: nil
-    t.integer  "role_id",                 default: 1, null: false
+    t.integer  "role_id",                              array: true
   end
 
   add_index "students", ["login"], name: "students_login_key", unique: true, using: :btree

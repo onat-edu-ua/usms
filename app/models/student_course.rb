@@ -5,4 +5,9 @@ class StudentCourse < ActiveRecord::Base
   def display_name
     "#{self.name}"
   end
+
+  def self.collection
+    order(:name)
+  end
+
 end
