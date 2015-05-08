@@ -82,7 +82,7 @@ ActiveRecord::Schema.define(version: 20141001142605) do
     t.string "name", limit: nil, null: false
   end
 
-  add_index "student_roles", ["name"], name: "student_role_name_key", unique: true, using: :btree
+  add_index "student_roles", ["name"], name: "student_roles_name_key", unique: true, using: :btree
 
   create_table "student_uploaded_documents", force: true do |t|
     t.string   "name",       limit: nil, null: false
@@ -94,10 +94,10 @@ ActiveRecord::Schema.define(version: 20141001142605) do
   end
 
   create_table "students", force: true do |t|
-    t.string   "first_name",  limit: nil,                   null: false
-    t.string   "last_name",   limit: nil,                   null: false
+    t.string   "first_name",  limit: nil,             null: false
+    t.string   "last_name",   limit: nil,             null: false
     t.string   "middle_name", limit: nil
-    t.datetime "created_at",              default: "now()", null: false
+    t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "ticket_num",  limit: nil
     t.string   "login",       limit: nil
@@ -105,10 +105,10 @@ ActiveRecord::Schema.define(version: 20141001142605) do
     t.integer  "group_id"
     t.string   "phone",       limit: nil
     t.string   "email",       limit: nil
-    t.integer  "role_id",                 default: 1,       null: false
+    t.integer  "role_id",                 default: 1, null: false
   end
 
-  add_index "students", ["login"], name: "students_username_key", unique: true, using: :btree
+  add_index "students", ["login"], name: "students_login_key", unique: true, using: :btree
 
   create_table "versions", force: true do |t|
     t.string   "item_type",  null: false
