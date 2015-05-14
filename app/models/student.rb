@@ -2,9 +2,9 @@ class Student < ActiveRecord::Base
 
   has_paper_trail :class_name => 'AuditLog'
 
-  belongs_to :group,:class_name => StudentGroup,:foreign_key => :group_id
- # belongs_to :role,:class_name => StudentRole,:foreign_key => :role_id
-  has_many :documents,:class_name => StudentUploadedDocument,:foreign_key => :student_id
+  belongs_to :group, class_name: StudentGroup, foreign_key: :group_id
+  belongs_to :hostel, class_name: Hostel, foreign_key: :hostel_id
+  has_many :documents, class_name: StudentUploadedDocument, foreign_key: :student_id
 
   validates_presence_of :first_name, :last_name, :group
   validates_format_of :email, :with => /(.*)@(.*)/
@@ -18,17 +18,32 @@ class Student < ActiveRecord::Base
     @r ||= StudentRole.where(id: role_id)
   end
 
+  validate do
+    if self.role_id.present? and self.role_id.any?
+      self.errors.add(:role_id, :invalid) if roles.count != self.role_id.count
+    end
+  end
+
+
+  def role_id=(role_ids) # removing zero element from array
+    self[:role_id] = role_ids.reject {|i| i.blank? }
+  end
+
+
+
+
 
   scope :role_in, ->(*ids) { where("role_id @>ARRAY[?]", ids.to_a.map(&:to_i)) }
+  scope :fio_contains, ->(name) { where("last_name||first_name||COALESCE(middle_name) ilike ?", "%#{name}%") }
 
   before_create do
-    ActiveRecord::Base.connection.execute("LOCK TABLE students")
+    ActiveRecord::Base.connection.execute("LOCK TABLE students") # need for unique login generation
     self.login=generate_login
     self.password=generate_password
   end
 
   after_create do
-    delay.ad_sync
+    delay.ldap_sync
   end
 
   def generate_login
@@ -41,6 +56,7 @@ class Student < ActiveRecord::Base
         break
       end
       @try=@start_try+i.to_s
+      #TODO raise exception if no success after 100 attempts
     end
     @try
   end
@@ -54,7 +70,7 @@ class Student < ActiveRecord::Base
     "#{self.last_name} #{self.first_name} #{self.middle_name}"
   end
 
-  def ad_sync
+  def ldap_sync
     ad = RADUM::AD.new :root => 'dc=test,dc=onat,dc=edu,dc=ua',
                     :user => 'cn=Administrator,cn=Users',
                     :password => '1yoyP23wru3hdgd',
@@ -109,7 +125,8 @@ class Student < ActiveRecord::Base
 
     def self.ransackable_scopes(auth_object = nil)
     [
-        :role_in
+        :role_in,
+        :fio_contains
     ]
   end
 

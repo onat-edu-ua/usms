@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141001142605) do
+ActiveRecord::Schema.define(version: 20150513043920) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -65,6 +65,38 @@ ActiveRecord::Schema.define(version: 20141001142605) do
 
   add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
 
+  create_table "faculties", force: true do |t|
+    t.string   "name",       limit: nil,                   null: false
+    t.datetime "created_at",             default: "now()", null: false
+    t.datetime "updated_at"
+  end
+
+  add_index "faculties", ["name"], name: "faculties_name_key", unique: true, using: :btree
+
+  create_table "hostels", force: true do |t|
+    t.string   "name",       limit: nil,                   null: false
+    t.datetime "created_at",             default: "now()", null: false
+    t.datetime "updated_at"
+  end
+
+  add_index "hostels", ["name"], name: "hostels_name_key", unique: true, using: :btree
+
+  create_table "message_types", id: false, force: true do |t|
+    t.integer "id",   limit: 2,   null: false
+    t.string  "name", limit: nil, null: false
+  end
+
+  add_index "message_types", ["name"], name: "message_types_name_key", unique: true, using: :btree
+
+  create_table "messages_log", force: true do |t|
+    t.integer "student_id",  limit: 8,   null: false
+    t.integer "batch_id",    limit: 8,   null: false
+    t.integer "type_id",     limit: 2,   null: false
+    t.string  "destination", limit: nil, null: false
+    t.string  "subject",     limit: nil
+    t.string  "message",     limit: nil
+  end
+
   create_table "student_courses", force: true do |t|
     t.string "name", limit: nil, null: false
   end
@@ -72,8 +104,9 @@ ActiveRecord::Schema.define(version: 20141001142605) do
   add_index "student_courses", ["name"], name: "student_courses_name_key", unique: true, using: :btree
 
   create_table "student_groups", force: true do |t|
-    t.string  "name",      limit: nil, null: false
-    t.integer "course_id",             null: false
+    t.string  "name",       limit: nil, null: false
+    t.integer "course_id",              null: false
+    t.integer "faculty_id", limit: 2
   end
 
   add_index "student_groups", ["name"], name: "student_groups_name_key", unique: true, using: :btree
@@ -94,18 +127,22 @@ ActiveRecord::Schema.define(version: 20141001142605) do
   end
 
   create_table "students", force: true do |t|
-    t.string   "first_name",  limit: nil, null: false
-    t.string   "last_name",   limit: nil, null: false
-    t.string   "middle_name", limit: nil
+    t.string   "first_name",      limit: nil, null: false
+    t.string   "last_name",       limit: nil, null: false
+    t.string   "middle_name",     limit: nil
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "ticket_num",  limit: nil
-    t.string   "login",       limit: nil
-    t.string   "password",    limit: nil
+    t.string   "ticket_num",      limit: nil
+    t.string   "login",           limit: nil
+    t.string   "password",        limit: nil
     t.integer  "group_id"
-    t.string   "phone",       limit: nil
-    t.string   "email",       limit: nil
-    t.integer  "role_id",                              array: true
+    t.string   "phone",           limit: nil
+    t.string   "email",           limit: nil
+    t.integer  "role_id",                                  array: true
+    t.integer  "hostel_id",       limit: 2
+    t.string   "hostel_room",     limit: nil
+    t.string   "parents_address", limit: nil
+    t.string   "parents_phone",   limit: nil
   end
 
   add_index "students", ["login"], name: "students_login_key", unique: true, using: :btree

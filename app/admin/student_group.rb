@@ -7,17 +7,20 @@ ActiveAdmin.register StudentGroup do
     id_column
     column :name
     column :course
+    column :faculty
   end
 
   filter :id
   filter :name
   filter :course
+  filter :faculty
 
   show do
     attributes_table do
       row :id
       row :name
       row :course
+      row :faculty
     end
   end
 
@@ -25,12 +28,13 @@ ActiveAdmin.register StudentGroup do
     f.inputs do
       f.input :name
       f.input :course
+      f.input :faculty
     end
     f.actions
   end
 
   permit_params do
-    [:name,:course_id]
+    [:name, :course_id, :faculty_id]
   end
 
 end

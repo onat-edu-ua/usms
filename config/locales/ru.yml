@@ -14,13 +14,21 @@ ru:
       student: "Студенты"
       system: "Конфигурация"
       item:
+        hostel: "Общежития"
         student: "Студенты"
+        faculty: "Факультеты"
         student_group: "Группы"
         student_role: "Роли"
         operator: "Операторы"
         audit_log: "Журнал операций"
         student_uploaded_document: "Документы студента"
         delayed_job: "Очередь задач"
+
+    filters:
+      students:
+        course: "Курс"
+        faculty: "Факультет"
+        fio: "ФИО Содержит"
 
   activerecord:
     errors:
@@ -29,6 +37,8 @@ ru:
           attributes:
             course:
               blank: "Необходимо указать курс на котором учится группа"
+            faculty:
+              blank: "Укажите факультет"
         student:
           attributes:
             group:
@@ -41,8 +51,12 @@ ru:
               blank: "Введите пароль для студента"
             email:
               invalid: "Неверный формат почтового адреса"
+            role_id:
+              invalid: "Передана несуществующая роль"
 
     models:
+      hostel: "Общежитие"
+      faculty: "Факультет"
       student: "Студент"
       admin_user: "Оператор"
       student_group: "Группа"
@@ -66,6 +80,10 @@ ru:
       student_group:
         name: "Имя группы"
         course: "Курс"
+      faculty:
+        name: "Название"
+      hostel:
+        name: "Название"
       student:
         first_name: "Имя"
         last_name: "Фамилия"
@@ -76,7 +94,12 @@ ru:
         group: "Группа"
         login: "Логин"
         password: "Пароль"
+        role_id: "Роль"
         role: "Роль"
+        hostel: "Общежитие"
+        hostel_room: "Комната"
+        parents_address: "Адрес родителей"
+        parents_phone: "Телефон родителей"
       admin_user:
         email: "Email"
         facultet: "Факультет"
