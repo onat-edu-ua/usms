@@ -13,7 +13,7 @@ bundle_bin=.gem/bin/bundle
 
 bundle_cfg_dir = bundle_build_cfg
 
-app_files = bin app .gem .bundle_gem .gemrc .bundle config config.ru db doc Gemfile Gemfile.lock lib public Rakefile README.rdoc sql test vendor pgq-processors $(version_file)
+app_files = bin app .gem .gemrc .bundle config config.ru db Gemfile Gemfile.lock lib public Rakefile README.rdoc test vendor $(version_file)
 
 exclude_files = config/database.yml
 
@@ -29,7 +29,7 @@ endef
 
 all: version.yml
 	@$(info:msg=init environment)
-	RAILS_ENV=$(env_mode) RACK_ENV=$(env_mode) RAKE_ENV=$(env_mode) GEM_PATH=.gem make all_env
+	RAILS_ENV=$(env_mode) RACK_ENV=$(env_mode) RAKE_ENV=$(env_mode) GEM_HOME=.gem GEM_PATH=.gem make all_env
 
 all_env:
 	@$(info:msg=apply build .gemrc)
@@ -42,12 +42,8 @@ all_env:
 	@$(bundle_bin) install
 
 	@$(info:msg=precompile assets)
-	@$(bundle_bin) exec ./bin/rake assets:precompile
+	@$(bundle_bin) exec rake assets:precompile
 
-	make -C pgq-processors
-	
-	@$(info:msg=apply prod .gemrc)
-	@cp -v .gemrc_prod .gemrc
 
 version.yml:
 	@$(info:msg=create version file (version: $(version), commit: $(commit)))
