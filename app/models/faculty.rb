@@ -1,4 +1,6 @@
-class StudentCourse < ActiveRecord::Base
+class Faculty < ActiveRecord::Base
+
+  self.table_name='faculties'
 
   has_paper_trail :class_name => 'AuditLog'
 

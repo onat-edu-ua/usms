@@ -3,6 +3,9 @@ ActiveAdmin.register_page "Dashboard" do
   menu priority: 1, label: proc{ I18n.t("active_admin.dashboard") }
 
   content title: proc{ I18n.t("active_admin.dashboard") } do
+    panel 'Info' do
+      I18n.t("usms.motd")
+    end
     panel 'Background Jobs' do
       now = Time.now.getgm
       ul do

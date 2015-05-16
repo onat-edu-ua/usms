@@ -2,44 +2,75 @@ class Student < ActiveRecord::Base
 
   has_paper_trail :class_name => 'AuditLog'
 
-  belongs_to :group,:class_name => StudentGroup,:foreign_key => :group_id
-  belongs_to :role,:class_name => StudentRole,:foreign_key => :role_id
-  has_many :documents,:class_name => StudentUploadedDocument,:foreign_key => :student_id
+  belongs_to :group, class_name: StudentGroup, foreign_key: :group_id
+  belongs_to :hostel, class_name: Hostel, foreign_key: :hostel_id
+  has_many :documents, class_name: StudentUploadedDocument, foreign_key: :student_id
 
   validates_presence_of :first_name, :last_name, :group
   validates_format_of :email, :with => /(.*)@(.*)/
 
 
-  def create_or_update
-    transaction do
-      ActiveRecord::Base.connection.execute("LOCK TABLE students")
+  def roles_list
+    roles.map(&:name).join(",")
+  end
 
-      if self.new_record?
-        self.password=SecureRandom.urlsafe_base64(5,false)
-        @start_try=Translit.convert(self.last_name, :english).downcase << "." << Translit.convert(self.first_name, :english)[0].downcase
+  def roles
+    @r ||= StudentRole.where(id: role_id)
+  end
 
-        ## check if username already exists
-        @try=@start_try
-        for i in 1..100
-          st=Student.find_by login: @try
-          if st.nil?
-            break
-          end
-          @try=@start_try+i.to_s
-        end
-        self.login=@try
-      end
-      super
-
-    self.delay.ad_sync
+  validate do
+    if self.role_id.present? and self.role_id.any?
+      self.errors.add(:role_id, :invalid) if roles.count != self.role_id.count
     end
   end
+
+
+  def role_id=(role_ids) # removing zero element from array
+    self[:role_id] = role_ids.reject {|i| i.blank? }
+  end
+
+
+
+
+
+  scope :role_in, ->(*ids) { where("role_id @>ARRAY[?]", ids.to_a.map(&:to_i)) }
+  scope :fio_contains, ->(name) { where("last_name||first_name||COALESCE(middle_name) ilike ?", "%#{name}%") }
+
+  before_create do
+    ActiveRecord::Base.connection.execute("LOCK TABLE students") # need for unique login generation
+    self.login=generate_login
+    self.password=generate_password
+  end
+
+  after_create do
+    delay.ldap_sync
+  end
+
+  def generate_login
+    @start_try=Translit.convert(self.last_name, :english).downcase << "." << Translit.convert(self.first_name, :english)[0].downcase
+    ## check if username already exists
+    @try=@start_try
+    for i in 1..100
+      st=Student.find_by login: @try
+      if st.nil?
+        break
+      end
+      @try=@start_try+i.to_s
+      #TODO raise exception if no success after 100 attempts
+    end
+    @try
+  end
+
+  def generate_password
+    SecureRandom.urlsafe_base64(5,false)
+  end
+
 
   def display_name
     "#{self.last_name} #{self.first_name} #{self.middle_name}"
   end
 
-  def ad_sync
+  def ldap_sync
     ad = RADUM::AD.new :root => 'dc=test,dc=onat,dc=edu,dc=ua',
                     :user => 'cn=Administrator,cn=Users',
                     :password => '1yoyP23wru3hdgd',
@@ -88,6 +119,15 @@ class Student < ActiveRecord::Base
     # }
     # ldap.add(:dn => dn, :attributes => attr)
 
+  end
+
+  private
+
+    def self.ransackable_scopes(auth_object = nil)
+    [
+        :role_in,
+        :fio_contains
+    ]
   end
 
 end

@@ -1,6 +1,16 @@
 Rails.application.routes.draw do
-  devise_for :admin_users, ActiveAdmin::Devise.config
-  ActiveAdmin.routes(self)
+  begin
+    devise_for :admin_users, ActiveAdmin::Devise.config
+    ActiveAdmin.routes(self)
+  rescue StandardError => e
+    if (File.basename($0) == "rake" && (ARGV.grep /^db/))
+      puts "AA is not ready :#{e.message}, skipping routes"
+    else
+      raise e
+    end
+  end
+
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

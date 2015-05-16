@@ -1,4 +1,6 @@
-class StudentCourse < ActiveRecord::Base
+class Hostel < ActiveRecord::Base
+
+  self.table_name='hostels'
 
   has_paper_trail :class_name => 'AuditLog'
 
