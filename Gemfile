@@ -51,3 +51,5 @@ gem 'daemons'
 gem 'activeldap'
 gem 'chosen-rails'
 gem 'ransack','1.4'
+gem 'syslog-logger'
+

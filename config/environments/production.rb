@@ -49,6 +49,10 @@ Rails.application.configure do
 
   # Use a different logger for distributed setups.
   # config.logger = ActiveSupport::TaggedLogging.new(SyslogLogger.new)
+  config.logger =  Logger::Syslog.new('usms', Syslog::LOG_LOCAL7)
+
+  # Use default logging formatter so that PID and timestamp are not suppressed.
+  config.log_formatter = ::Logger::Formatter.new
 
   # Use a different cache store in production.
   # config.cache_store = :mem_cache_store
