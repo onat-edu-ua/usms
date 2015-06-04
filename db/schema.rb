@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150513043920) do
+ActiveRecord::Schema.define(version: 20150604143516) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -143,6 +143,7 @@ ActiveRecord::Schema.define(version: 20150513043920) do
     t.string   "hostel_room",     limit: nil
     t.string   "parents_address", limit: nil
     t.string   "parents_phone",   limit: nil
+    t.string   "parents",         limit: nil
   end
 
   add_index "students", ["login"], name: "students_login_key", unique: true, using: :btree

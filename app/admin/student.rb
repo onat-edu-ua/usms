@@ -60,6 +60,7 @@ ActiveAdmin.register Student do
       end
       tab "Parents" do
         attributes_table_for s do
+          row :parents
           row :parents_address
           row :parents_phone
         end
@@ -80,6 +81,7 @@ ActiveAdmin.register Student do
       f.input :role_id, as: :select, input_html: {class: 'chosen', multiple: true}, collection: StudentRole.collection
       f.input :hostel, as: :select, input_html: {class: 'chosen', multiple: false}
       f.input :hostel_room
+      f.input :parents
       f.input :parents_address
       f.input :parents_phone
     end

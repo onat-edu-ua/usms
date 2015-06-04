@@ -1,3 +1,9 @@
+usms (0.1.2) wheezy; urgency=medium
+
+  * Add parents field
+
+ --  <sdi@lea>  Thu, 04 Jun 2015 17:38:13 +0300
+
 usms (0.1.1+nmu1) wheezy; urgency=medium
 
   * move to unicorn

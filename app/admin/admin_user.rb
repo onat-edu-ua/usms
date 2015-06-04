@@ -8,9 +8,13 @@ ActiveAdmin.register AdminUser do
     id_column
     actions
     column :email
-    column :current_sign_in_at
     column :sign_in_count
+    column :current_sign_in_at
+    column :last_sign_in_at
+    column :current_sign_in_ip
+    column :last_sign_in_ip
     column :created_at
+    column :updated_at
   end
 
   filter :email
@@ -25,6 +29,20 @@ ActiveAdmin.register AdminUser do
       f.input :password_confirmation
     end
     f.actions
+  end
+
+  show do |s|
+    attributes_table do
+      row :id
+      row :email
+      row :sign_in_count
+      row :current_sign_in_at
+      row :last_sign_in_at
+      row :current_sign_in_ip
+      row :last_sign_in_ip
+      row :created_at
+      row :updated_at
+    end
   end
 
 end
