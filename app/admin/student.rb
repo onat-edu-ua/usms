@@ -1,7 +1,7 @@
 ActiveAdmin.register Student do
   menu :label=>I18n.t('usms.menu.item.student'), :parent => I18n.t('usms.menu.student'), :priority => 10
   config.batch_actions = true
-  actions :index, :destroy, :create, :new, :edit, :update, :show
+  actions :index, :create, :new, :edit, :update, :show
 
 
   index do
@@ -88,13 +88,23 @@ ActiveAdmin.register Student do
     f.actions
   end
 
-  sidebar(I18n.t('usms.menu.item.student'), :only=>[:show, :edit]) do
+  # sidebar(I18n.t('usms.menu.item.student'), :only=>[:show, :edit]) do
+  #
+  # end
 
+  sidebar 'Add document', only: [:show] do
+    active_admin_form_for(StudentUploadedDocument.new(student_id: params[:id]), url: admin_student_uploaded_documents_path ) do |f|
+      f.inputs do
+        f.input :student_id, as: :hidden
+        f.input :name, input_html: {style: 'width: 200px'}
+        f.input :student_file, label: "File", as: :file, input_html: {style: 'width: 200px'}
+      end
+      f.actions
+    end
   end
 
-
-  permit_params :last_name,:first_name,:middle_name,:ticket_num,:group_id,
-                :parents_phone, :parents_address,
-                :phone,:email, :hostel_id, :hostel_room, role_id: []
+  permit_params :last_name, :first_name, :middle_name, :ticket_num, :group_id,
+                :parents, :parents_phone, :parents_address,
+                :phone, :email, :hostel_id, :hostel_room, role_id: []
 
 end

@@ -16,5 +16,6 @@
 /tmp
 /config/database.yml
 /config/secrets.yml
+/config/samba.yml
 /.idea
 /public/assets/

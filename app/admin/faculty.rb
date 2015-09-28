@@ -19,6 +19,7 @@ ActiveAdmin.register Faculty do
   end
 
   form do |f|
+    f.semantic_errors *f.object.errors.keys
     f.inputs do
       f.input :name
     end

@@ -12,4 +12,8 @@ class StudentRole < ActiveRecord::Base
     order(:name)
   end
 
+  def name=(nm)
+    self[:name] = nm.strip
+  end
+
 end

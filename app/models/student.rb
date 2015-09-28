@@ -7,8 +7,18 @@ class Student < ActiveRecord::Base
   has_many :documents, class_name: StudentUploadedDocument, foreign_key: :student_id
 
   validates_presence_of :first_name, :last_name, :group
-  validates_format_of :email, :with => /(.*)@(.*)/
+  validates_format_of :email, with: /(.*)@(.*)/, allow_nil: true, allow_blank: true #TODO fix regexp
+  validates_format_of :phone, with: /0(.*)/, allow_nil: true, allow_blank: true #TODO fix regexp
+  validates_uniqueness_of :ticket_num, :email
 
+
+  after_create do
+    delay.samba_sync
+  end
+
+  after_update do
+    delay.samba_sync
+  end
 
   def roles_list
     roles.map(&:name).join(",")
@@ -26,11 +36,32 @@ class Student < ActiveRecord::Base
 
 
   def role_id=(role_ids) # removing zero element from array
-    self[:role_id] = role_ids.reject {|i| i.blank? }
+    self[:role_id] = role_ids.reject { |i| i.blank? }
   end
 
+  def first_name=(nm)
+    self[:first_name] = nm.strip
+  end
 
+  def last_name=(nm)
+    self[:last_name] = nm.strip
+  end
 
+  def middle_name=(nm)
+    self[:middle_name] = nm.strip
+  end
+
+  def email=(nm)
+    self[:email] = nm.strip
+  end
+
+  def ticket_num=(nm)
+    self[:ticket_num] = nm.strip
+  end
+
+  def phone=(nm)
+    self[:phone] = nm.strip
+  end
 
 
   scope :role_in, ->(*ids) { where("role_id @>ARRAY[?]", ids.to_a.map(&:to_i)) }
@@ -40,10 +71,6 @@ class Student < ActiveRecord::Base
     ActiveRecord::Base.connection.execute("LOCK TABLE students") # need for unique login generation
     self.login=generate_login
     self.password=generate_password
-  end
-
-  after_create do
-    delay.ldap_sync
   end
 
   def generate_login
@@ -62,7 +89,7 @@ class Student < ActiveRecord::Base
   end
 
   def generate_password
-    SecureRandom.urlsafe_base64(5,false)
+    SecureRandom.urlsafe_base64(5, false)
   end
 
 
@@ -70,60 +97,23 @@ class Student < ActiveRecord::Base
     "#{self.last_name} #{self.first_name} #{self.middle_name}"
   end
 
-  def ldap_sync
-    ad = RADUM::AD.new :root => 'dc=test,dc=onat,dc=edu,dc=ua',
-                    :user => 'cn=Administrator,cn=Users',
-                    :password => '1yoyP23wru3hdgd',
-                    :server => '10.4.1.101'
-
-    cont=ad.find_container('cn=Users')
-    ad.load
-
-    user = ad.find_user_by_username(self.login)
-    unless user.nil?
-      user.password=self.password
-      user.mail=self.email
-      user.telephone_number=self.phone
-      user.first_name=self.first_name
-      user.middle_name=self.middle_name
-      user.surname=self.last_name
-      ad.sync
-    else
-      user = RADUM::User.new :username => self.login,
-                           #:rid=>self.id,
-                           :container=>cont ,
-                           :primary_group=>ad.find_group_by_name('Domain Users'),
-                           :password=> self.password
-      ad.sync
-      self.ad_sync # fucking recursion
-    end
-
-
-   # user = User.find("Administrator")
-    #puts user
-
-    # ldap = Net::LDAP.new
-    # ldap.host = "10.4.1.101"
-    # ldap.port = 389
-    # ldap.authenticate "Administrator", "1yoyP23wru3hdgd"
-    #
-    # dn = "cn=#{self.login}, dc=test, dc=onat, dc=edu, dc=ua"
-    #
-    # attr = {
-    #     :cn => self.login,
-    #     :password => self.password,
-    #     :objectclass => "User",
-    #     :sn => self.login,
-    #     :telephoneNumber => self.phone,
-    #     :mail => self.email
-    # }
-    # ldap.add(:dn => dn, :attributes => attr)
-
+  def samba_sync
+    user=Backend::SambaUser.new(
+        id: id,
+        login: login,
+        display_name: display_name,
+        first_name: first_name,
+        last_name: last_name,
+        phone: phone,
+        email: email,
+        password: password
+    )
+    user.sync
   end
 
   private
 
-    def self.ransackable_scopes(auth_object = nil)
+  def self.ransackable_scopes(auth_object = nil)
     [
         :role_in,
         :fio_contains

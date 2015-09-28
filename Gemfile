@@ -34,7 +34,7 @@ gem 'pg'
 gem 'unicorn'
 gem 'therubyracer'
 gem 'devise'
-gem 'puma'
+#gem 'puma'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
@@ -42,14 +42,14 @@ gem 'puma'
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 
-gem 'translit'
+gem 'translit', github: 'kravchuk-ievgenii/translit' # with UA support
 gem 'active_admin_sidebar', :git => 'https://github.com/Fivell/active_admin_sidebar.git'
 gem 'radum', :git => 'https://github.com/srna/radum.git'
 gem 'paper_trail'
 gem 'delayed_job_active_record'
 gem 'daemons'
-gem 'activeldap'
 gem 'chosen-rails'
 gem 'ransack','1.4'
 gem 'syslog-logger'
-
+#gem 'activeldap', github: 'activeldap/activeldap'
+gem 'net-ldap'

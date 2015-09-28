@@ -25,12 +25,13 @@ ActiveAdmin.register StudentUploadedDocument do
   form do |f|
     f.inputs do
       f.input :name
+      f.input :student_file, label: "File", as: :file
     end
     f.actions
   end
 
   permit_params do
-    [:name,:filename,:data,:student_id]
+    [:name, :student_file, :student_id, :data]
   end
 
 end
