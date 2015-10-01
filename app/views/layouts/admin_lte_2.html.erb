@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Student Dashboard</title>
+  <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+  <link href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet" type="text/css"/>
+
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.2/html5shiv.js"></script>
+  <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+  <%= csrf_meta_tags %>
+</head>
+
+<body class="skin-blue sidebar-mini fixed <%= params[:controller].parameterize %> <%= action_name %>">
+< class="wrapper">
+
+<%= render partial: 'admin_lte_2/header' %>
+
+<%= render partial: 'admin_lte_2/sidebar' %>
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <% if respond_to?(:admin_assigns) && admin_assigns.present? %>
+        <h1>
+          <%= admin_assigns[:page_name] %>
+          <small><%= admin_assigns[:page_description] %></small>
+        </h1>
+        <% if admin_assigns[:breadcrumbs].present? %>
+            <ol class="breadcrumb">
+              <% admin_assigns[:breadcrumbs].each do |crumb| %>
+                  <li><a href="<%= crumb[:link] %>"><i class="fa fa-<%= crumb[:icon] %>"></i> <%= crumb[:name] %></a></li>
+              <% end %>
+              <li class="active">Here</li>
+            </ol>
+        <% end %>
+    <% end %>
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+    <% if notice %>
+        <div class="alert alert-success alert-dismissable">
+          <i class="fa fa-check"></i>
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+          <b><%= notice %></b>
+        </div>
+    <% end %>
+
+    <% if alert %>
+        <div class="alert alert-danger alert-dismissable">
+          <i class="fa fa-ban"></i>
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+          <b><%= alert %></b>
+        </div>
+    <% end %>
+    <%= yield %>
+  </section>
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<!-- Main Footer -->
+<footer class="main-footer">
+  <!-- To the right -->
+  <div class="pull-right hidden-xs">
+    Anything you want
+  </div>
+  <!-- Default to the left -->
+  <strong>Copyright &copy; 2015 <a href="#">Onat.edu.ua</a>.</strong> All rights reserved.
+</footer>
+
+<aside class="control-sidebar control-sidebar-dark">
+  <!-- Create the tabs -->
+  <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
+    <li class="active">
+      <a href="#control-sidebar-home-tab" data-toggle="tab" aria-expanded="true"><i class="fa fa-home"></i></a></li>
+    <li class="">
+      <a href="#control-sidebar-settings-tab" data-toggle="tab" aria-expanded="false"><i class="fa fa-gears"></i></a>
+    </li>
+  </ul>
+</aside>
+
+<div class="control-sidebar-bg" style="position: fixed; height: auto;"></div>
+
+</div><!-- ./wrapper -->
+
+<%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+</body>
+</html>

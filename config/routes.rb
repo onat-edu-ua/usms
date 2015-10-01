@@ -11,6 +11,18 @@ Rails.application.routes.draw do
   end
 
 
+  namespace :student do
+    get 'sign_in' => 'sessions#new'
+    post 'sign_in' => 'sessions#create'
+    delete 'sign_out' => 'sessions#destroy'
+
+    get 'cabinet' => 'cabinet#show'
+    get 'cabinet/edit' => 'cabinet#edit'
+    put 'cabinet' => 'cabinet#update'
+  end
+
+  root to: 'student/cabinet#show'
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

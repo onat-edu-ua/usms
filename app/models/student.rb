@@ -111,6 +111,15 @@ class Student < ActiveRecord::Base
     user.sync
   end
 
+  def authenticate(pass)
+    return false if pass.blank?
+    self.password == pass
+  end
+
+  def full_name
+    "#{self.first_name} #{self.last_name}"
+  end
+
   private
 
   def self.ransackable_scopes(auth_object = nil)

@@ -53,3 +53,6 @@ gem 'ransack','1.4'
 gem 'syslog-logger'
 #gem 'activeldap', github: 'activeldap/activeldap'
 gem 'net-ldap'
+
+gem 'adminlte2-rails'
+gem 'bootstrap-sass'
