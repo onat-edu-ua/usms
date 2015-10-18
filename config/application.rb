@@ -1,6 +1,7 @@
 require File.expand_path('../boot', __FILE__)
 
 require 'rails/all'
+require 'active_resource/railtie'
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -24,6 +25,10 @@ module Usms
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '*.{rb,yml}').to_s]
     I18n.load_path += Dir[Rails.root.join('config', 'locales', '*.{rb,yml}').to_s]
     I18n.default_locale = :ru
+
+     config.generators do |g|
+       g.fixture_replacement :factory_girl
+     end
 
   end
 end

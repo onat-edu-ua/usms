@@ -8,16 +8,25 @@ module StudentAuthorization
   end
 
   def authorize_student!
-    logger.error session[:student_id]
     redirect_to student_sign_in_path unless signed_in?
   end
 
   def current_student
-    @current_student ||= Student.find_by(id: session[:student_id])
+    @current_student ||= find_student(session[:student_id]) if session[:student_id]
   end
 
   def signed_in?
     !current_student.nil?
+  end
+
+  private
+
+  def find_student(id)
+    begin
+      Remote::Student.find(id)
+    rescue ActiveResource::ResourceNotFound
+      nil
+    end
   end
 
 end

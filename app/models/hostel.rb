@@ -1,3 +1,13 @@
+# == Schema Information
+#
+# Table name: hostels
+#
+#  id         :integer          not null, primary key
+#  name       :string(255)      not null
+#  created_at :datetime         default(2015-10-15 21:01:28 UTC), not null
+#  updated_at :datetime
+#
+
 class Hostel < ActiveRecord::Base
 
   self.table_name='hostels'

@@ -23,6 +23,16 @@ Rails.application.routes.draw do
 
   root to: 'student/cabinet#show'
 
+  namespace :api do
+    with_options defaults: {format: :json} do |api|
+      api.resources :students, only: [:show, :update] do
+        collection do
+          api.get :authenticate
+        end
+      end
+    end
+  end
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

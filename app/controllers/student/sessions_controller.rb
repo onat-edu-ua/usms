@@ -7,8 +7,8 @@ class Student::SessionsController < ApplicationController
   end
 
   def create
-    student = Student.find_by login: session_params[:login].try!(:downcase)
-    if student && student.authenticate(session_params[:password])
+    student = authenticate_student(session_params[:login].try!(:downcase), session_params[:password])
+    if student
       sign_in_student(student)
       flash[:info] = 'Sign in successful'
       redirect_to root_url
@@ -24,7 +24,7 @@ class Student::SessionsController < ApplicationController
   end
 
   def current_student
-    @current_student ||= Student.find_by(id: session[:student_id]) if session[:student_id]
+    @current_student ||= find_student(session[:student_id]) if session[:student_id]
   end
 
   def signed_in?
@@ -44,12 +44,26 @@ class Student::SessionsController < ApplicationController
   end
 
   def sign_in_student(student)
-    session[:student_id] = student.id
+    session[:student_id] = student['id']
   end
 
   def sign_out_student
     session.delete(:student_id)
     @current_student = nil
   end
+
+  def find_student(id)
+    begin
+      Remote::Student.find(id)
+    rescue ActiveResource::ResourceNotFound
+      nil
+    end
+  end
+
+  def authenticate_student(login, password)
+    Remote::Student.get(:authenticate, login: login, password: password)
+  end
+
+
 
 end

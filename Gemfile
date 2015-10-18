@@ -56,3 +56,12 @@ gem 'net-ldap'
 
 gem 'adminlte2-rails'
 gem 'bootstrap-sass'
+
+gem 'activeresource' # for API client
+
+group :test, :development do
+  gem 'rspec-rails'
+  gem 'factory_girl_rails'
+  gem 'database_cleaner'
+  gem 'annotate'
+end

@@ -1,3 +1,16 @@
+# == Schema Information
+#
+# Table name: student_uploaded_documents
+#
+#  id         :integer          not null, primary key
+#  name       :string(255)      not null
+#  filename   :string(255)      not null
+#  data       :binary
+#  created_at :datetime
+#  updated_at :datetime
+#  student_id :integer          not null
+#
+
 class StudentUploadedDocument < ActiveRecord::Base
 
   self.table_name='student_uploaded_documents'

@@ -22,10 +22,7 @@ class Student::CabinetController < ApplicationController
   end
 
   def update
-    unless student_params[:password].present? && student_params[:password] == student_params[:password_retype]
-      flash.now[:alert] = 'Password mismatch!'
-      render :edit
-    else
+    if student_params[:password].present? && student_params[:password] == student_params[:password_retype]
 
       current_student.password = student_params[:password]
       if current_student.save
@@ -36,6 +33,11 @@ class Student::CabinetController < ApplicationController
         # flash.now[:alert] = 'Validation failed!'
         render :edit
       end
+
+    else
+
+      flash.now[:alert] = 'Password mismatch!'
+      render :edit
 
     end
   end

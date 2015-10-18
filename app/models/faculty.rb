@@ -1,3 +1,13 @@
+# == Schema Information
+#
+# Table name: faculties
+#
+#  id         :integer          not null, primary key
+#  name       :string(255)      not null
+#  created_at :datetime         now(), not null
+#  updated_at :datetime
+#
+
 class Faculty < ActiveRecord::Base
 
   self.table_name='faculties'

@@ -1,3 +1,13 @@
+# == Schema Information
+#
+# Table name: student_groups
+#
+#  id         :integer          not null, primary key
+#  name       :string(255)      not null
+#  course_id  :integer          not null
+#  faculty_id :integer
+#
+
 class StudentGroup < ActiveRecord::Base
 
   has_paper_trail :class_name => 'AuditLog'
