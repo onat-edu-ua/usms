@@ -10,19 +10,6 @@ Rails.application.routes.draw do
     end
   end
 
-
-  namespace :student do
-    get 'sign_in' => 'sessions#new'
-    post 'sign_in' => 'sessions#create'
-    delete 'sign_out' => 'sessions#destroy'
-
-    get 'cabinet' => 'cabinet#show'
-    get 'cabinet/edit' => 'cabinet#edit'
-    put 'cabinet' => 'cabinet#update'
-  end
-
-  root to: 'student/cabinet#show'
-
   namespace :api do
     with_options defaults: {format: :json} do |api|
       api.resources :students, only: [:show, :update] do

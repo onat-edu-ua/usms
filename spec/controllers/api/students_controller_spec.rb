@@ -48,7 +48,7 @@ RSpec.describe Api::StudentsController, type: :controller do
       it 'should return correct body' do
         subject
         expect(response.status).to eq 200
-        expect(response_body.except('created_at', 'updated_at')).to eq student.attributes.except('created_at', 'updated_at', 'password')
+        expect(response_body).to eq({'id' => student.id})
       end
     end
 

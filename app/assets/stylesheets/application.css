@@ -15,20 +15,3 @@
  *= require chosen
  */
 
-@import "bootstrap-sprockets";
-@import "bootstrap";
-@import "AdminLTE/AdminLTE.css";
-@import "AdminLTE/skins/skin-blue.css";
-
-
-.bg-red,
-.alert-danger,
-.alert-error,
-.alert-success,
-.label-danger,
-.label-success,
-.modal-danger
-.modal-success,
-.modal-body {
-    background-image: none;
-}

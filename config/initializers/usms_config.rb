@@ -1,1 +1,0 @@
-USMS_CONFIG = YAML.load_file(Rails.root.join('config', 'usms_config.yml'))[Rails.env].try!(:with_indifferent_access) || {}

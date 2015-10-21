@@ -9,13 +9,14 @@ class ApiController < ApplicationController
   protected
 
   def render_404(e)
-    notify_error(e)
-    render :json => {:error => "not-found"}.to_json, :status => 404
+    # notify_error(e)
+    logger.warn { e.message }
+    render json: {error: 'not-found'}.to_json, :status => 404
   end
 
   def render_500(e)
     notify_error(e)
-    render :json => {:error => "internal-server-error"}.to_json, :status => 500
+    render json: {error: 'internal-server-error'}.to_json, :status => 500
   end
 
   def notify_error(e)
