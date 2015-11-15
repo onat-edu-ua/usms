@@ -1,4 +1,4 @@
-/var/log/usms.log {
+/var/log/usms/*.log {
 	daily
 	rotate 7
 	copytruncate
