@@ -13,7 +13,7 @@ bundle_bin=.gem/bin/bundle
 
 bundle_cfg_dir = bundle_build_cfg
 
-app_files = bin app .gem .gemrc .bundle config config.ru db Gemfile Gemfile.lock lib public Rakefile README.rdoc test vendor $(version_file)
+app_files = bin app .gem .gemrc .bundle config config.ru db Gemfile Gemfile.lock lib public Rakefile README.rdoc vendor $(version_file)
 
 exclude_files = config/database.yml
 

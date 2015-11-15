@@ -2,7 +2,7 @@ worker_processes 4
 user "usms", "usms"
 working_directory "/home/usms" # available in 0.94.0+
 
-listen "0.0.0.0:3000", backlog: 1024
+listen "/var/run/usms/usms-unicorn.sock", backlog: 1024
 
 timeout 600
 

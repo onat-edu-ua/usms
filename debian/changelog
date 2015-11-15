@@ -1,4 +1,11 @@
-usms (0.2.0) UNRELEASED; urgency=medium
+usms (0.2.1) wheezy; urgency=medium
+
+  * switch unicorn to listening unix socket
+  * build fixes
+
+ --  <sdi@lea>  Sun, 15 Nov 2015 16:30:23 +0200
+
+usms (0.2.0) wheezy; urgency=medium
 
   * API for students interface added
 
